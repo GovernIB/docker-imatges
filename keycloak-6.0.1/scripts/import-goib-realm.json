@@ -1,0 +1,126 @@
+{
+    "realm": "GOIB",
+    "enabled": true,
+    "clients": [
+        {
+            "clientId": "goib-default",
+            "description": "Autenticación de aplicaciones del GOIB (entorno de desarrollo local)",
+            "enabled": true,
+            "publicClient": true,
+            "standardFlowEnabled": true,
+            "implicitFlowEnabled": false,
+            "directAccessGrantsEnabled": true,
+            "authorizationServicesEnabled": false,
+            "rootUrl": "/goib-default",
+            "redirectUris": [
+                "*"
+            ],
+            "adminUrl": "/goib-default",
+            "webOrigins": [
+                "*"
+            ],
+            "attributes": {
+                "login_theme": "keycloak"
+            }
+        },
+        {
+            "clientId": "goib-ws",
+            "enabled": true,
+            "clientAuthenticatorType": "client-secret",
+            "secret": "e73e8e95-d88c-42bf-a76b-273be6708018",
+            "bearerOnly" : true,
+            "publicClient": true,
+            "standardFlowEnabled": true,
+            "implicitFlowEnabled": false,
+            "directAccessGrantsEnabled": true,
+            "serviceAccountsEnabled": true,
+            "authorizationServicesEnabled": true,
+            "redirectUris": [
+                "*"
+            ],
+            "webOrigins": [
+                "*"
+            ]
+        },
+        {
+            "clientId": "goib-cert",
+            "description": "Autenticación con certificado del GOIB (entorno de desarrollo local)",
+            "enabled": true,
+            "publicClient": true,
+            "standardFlowEnabled": true,
+            "implicitFlowEnabled": false,
+            "directAccessGrantsEnabled": true,
+            "authorizationServicesEnabled": false,
+            "rootUrl": "/goib-cert",
+            "redirectUris": [
+                "*"
+            ],
+            "adminUrl": "/goib-cert",
+            "webOrigins": [
+                "*"
+            ],
+            "attributes": {
+                "login_theme": "keycloak"
+            }
+        }
+    ],
+    "users": [
+        {
+            "username": "u999000",
+            "enabled": true,
+            "firstName": "NomUsuari",
+            "lastName": "LlinatgeUsuari",
+            "email":"u999000@caib.es",
+            "credentials": [
+                {
+                    "type": "password",
+                    "value": "u999000"
+                }
+            ],
+            "clientRoles": {
+                    "goib-default": [
+                        "EBO_SUPERVISOR"
+                    ]
+            }
+        },
+        {
+            "username": "$GOIB_USUARI",
+            "enabled": true,
+            "credentials": [
+                {
+                    "type": "password",
+                    "value": "$GOIB_USUARI"
+                }
+            ],
+            "clientRoles": {
+                    "goib-ws": [
+                        "EBO_SUPERVISOR"
+                    ]
+            }
+        }
+    ],
+    "roles": {
+        "realm": [
+            {
+                "name": "EBO_SUPERVISOR",
+                "description": "Administrator privileges"
+            }
+        ],
+        "client": {
+            "goib-default": [
+                {
+                   "name": "EBO_SUPERVISOR",
+                   "description": "Administrator privileges",
+                   "composite": false,
+                   "clientRole": true
+                }],
+            "goib-ws": [
+                {
+                   "name": "EBO_SUPERVISOR",
+                   "description": "Administrator privileges",
+                   "composite": false,
+                   "clientRole": true
+                }]
+        }
+    }
+}
