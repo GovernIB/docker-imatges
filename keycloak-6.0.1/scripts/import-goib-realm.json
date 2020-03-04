@@ -4,7 +4,7 @@
     "clients": [
         {
             "clientId": "goib-default",
-            "description": "Autenticación de aplicaciones del GOIB (entorno de desarrollo local)",
+            "description": "Autenticación de aplicaciones (entorno de desarrollo local)",
             "enabled": true,
             "publicClient": true,
             "standardFlowEnabled": true,
@@ -25,6 +25,7 @@
         },
         {
             "clientId": "goib-ws",
+            "description": "Autenticación de servicios API REST (entorno de desarrollo local)",
             "enabled": true,
             "clientAuthenticatorType": "client-secret",
             "secret": "e73e8e95-d88c-42bf-a76b-273be6708018",
@@ -41,27 +42,6 @@
             "webOrigins": [
                 "*"
             ]
-        },
-        {
-            "clientId": "goib-cert",
-            "description": "Autenticación con certificado del GOIB (entorno de desarrollo local)",
-            "enabled": true,
-            "publicClient": true,
-            "standardFlowEnabled": true,
-            "implicitFlowEnabled": false,
-            "directAccessGrantsEnabled": true,
-            "authorizationServicesEnabled": false,
-            "rootUrl": "/goib-cert",
-            "redirectUris": [
-                "*"
-            ],
-            "adminUrl": "/goib-cert",
-            "webOrigins": [
-                "*"
-            ],
-            "attributes": {
-                "login_theme": "keycloak"
-            }
         }
     ],
     "users": [
@@ -100,12 +80,6 @@
         }
     ],
     "roles": {
-        "realm": [
-            {
-                "name": "EBO_SUPERVISOR",
-                "description": "Administrator privileges"
-            }
-        ],
         "client": {
             "goib-default": [
                 {
