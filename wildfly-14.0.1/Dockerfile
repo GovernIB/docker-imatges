@@ -23,7 +23,7 @@ FROM jboss/wildfly:14.0.1.Final
 
 LABEL MAINTAINER="Govern de les Illes Balears <suport@caib.es>"
 
-ARG KEYCLOAK_URI_ARG=http://localhost:8180
+ARG KEYCLOAK_URI_ARG=http://keycloak-goib:8180
 
 ENV JBOSS_USER=jboss \
     JBOSS_USER_HOME=/home/${JBOSS_USER} \
