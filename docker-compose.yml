@@ -1,0 +1,31 @@
+# Requiere añadir al fichero hosts (en Unix/Linux /etc/hosts; en Windows C:\Windows\System32\drivers\etc\hosts) 
+# la direccion interna para keycloak-goib
+# 127.0.0.1 keycloak-goib
+
+version: '3.6'
+
+services:
+ keycloak:
+    image: goib/keycloak:6.0.1
+    container_name: "keycloak-goib"   
+    environment:
+     - KEYCLOAK_USER=admin
+     - KEYCLOAK_PASSWORD=admin
+    ports:
+     - 8180:8180
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://keycloak-goib:8180/auth/realms/GOIB"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+ wildfly:
+    image: goib/wildfly:14.0.1
+    container_name: "wildfly-goib"
+    environment:
+     - ADMIN_USER=admin
+     - ADMIN_PASSWORD=admin
+    ports:
+     - 8080:8080
+     - 9990:9990
+    depends_on:
+      - keycloak
