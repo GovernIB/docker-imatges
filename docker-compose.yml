@@ -1,6 +1,14 @@
-# Requiere añadir al fichero hosts (en Unix/Linux /etc/hosts; en Windows C:\Windows\System32\drivers\etc\hosts) 
-# la direccion interna para keycloak-goib
+###########################################################################################################################
+# Requisitos
+# (1) Añadir al fichero hosts (en Unix/Linux /etc/hosts; en Windows C:\Windows\System32\drivers\etc\hosts) la dirección
 # 127.0.0.1 keycloak-goib
+#
+# (2) Crear el directorio local donde se escaneará el directorio de deployments
+# Unix/Linux: $ mkdir /tmp/deployments && chmod 755 /tmp/deployments
+# Windows: crear directorio C:\tmp\deployments y añadirle permisos de lectura a todos los usuarios
+#
+# (3) Para probar la aplicación /goibusuari es necesario copiar el fichero goibusuari.ear dentro del directorio local de deployments
+###########################################################################################################################
 
 version: '3.6'
 
@@ -27,5 +35,8 @@ services:
     ports:
      - 8080:8080
      - 9990:9990
+    volumes:
+     - /tmp/deployments:/opt/jboss/wildfly/standalone/deployments
+     # - C:\tmp\deployments:/opt/jboss/wildfly/standalone/deployments
     depends_on:
       - keycloak
