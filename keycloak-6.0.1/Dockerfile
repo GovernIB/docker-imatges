@@ -5,11 +5,13 @@
 # docker build -t goib/keycloak:6.0.1 .
 #
 # Comando para crear y ejecutar un contenedor: 
-# docker run -p 8180:8180 --name NOMBRE_CONTENEDOR goib/keycloak:6.0.1
+# docker run -p 8180:8180 goib/keycloak:6.0.1
 #
-# Incluye: realm GOIB; clients goib-default, goib-ws y goib-cert; rol EBO_SUPERVISOR a nivel
-# de realm y clients; usuario para autenticarse u999000 con password u999000;
-# y usuario de aplicación $GOIB_USUARI con password $GOIB_USUARI
+# Expone el puerto 8180
+#
+# Incluye: el realm GOIB; los clientes goib-default y goib-ws; el rol EBO_SUPERVISOR a nivel
+# de realm y clientes; el usuario u999000 con password u999000 para autenticación goib-default;
+# y el usuario $GOIB_USUARI con password $GOIB_USUARI para autenticación goib-ws
 #
 #############################################################################################
 

@@ -4,6 +4,7 @@ Keycloak és un producte de programari de codi obert que permet l'inici de sessi
 ## Creació i execució d'un contenidor  
     $ docker run -p 8180:8180 -d goib/keycloak:6.0.1  
 
-L'usuari administrador per defecte és admin/admin. Es pot personalitzar executant:  
+## Administració
+L'usuari administrador per defecte és admin (password admin). Es pot personalitzar executant:  
     $ docker run -p 8180:8180 -d -e KEYCLOAK_USER=user -e KEYCLOAK_PASSWORD=password goib/keycloak:6.0.1
 
