@@ -19,14 +19,15 @@
 #
 ###############################################################################################
 
-FROM jboss/wildfly:14.0.1.Final
+# Use latest jboss/base-jdk:11 image as the base
+FROM jboss/base-jdk:11
 
 LABEL MAINTAINER="Govern de les Illes Balears <suport@caib.es>"
 
 ARG KEYCLOAK_URI_ARG=http://keycloak-goib:8180
 
-ENV JBOSS_USER=jboss \
-    JBOSS_USER_HOME=/home/${JBOSS_USER} \
+ENV WILDFLY_VERSION=14.0.1.Final \
+    WILDFLY_SHA1=757d89d86d01a9a3144f34243878393102d57384 \
     JBOSS_HOME=/opt/jboss/wildfly \
     ADMIN_USER=admin \
     ADMIN_PASSWORD=admin \
@@ -37,6 +38,22 @@ ENV JBOSS_USER=jboss \
     PATH=${JBOSS_HOME}/bin:/tmp:${PATH}
 
 USER root
+
+# Add the WildFly distribution to /opt, and make wildfly the owner of the extracted tar content
+# Make sure the distribution is available from a well-known place
+RUN cd $HOME \
+    && curl -O https://download.jboss.org/wildfly/$WILDFLY_VERSION/wildfly-$WILDFLY_VERSION.tar.gz \
+    && sha1sum wildfly-$WILDFLY_VERSION.tar.gz | grep $WILDFLY_SHA1 \
+    && tar xf wildfly-$WILDFLY_VERSION.tar.gz \
+    && mv $HOME/wildfly-$WILDFLY_VERSION $JBOSS_HOME \
+    && rm wildfly-$WILDFLY_VERSION.tar.gz \
+    && chown -R jboss:0 ${JBOSS_HOME} \
+    && chmod -R g+rw ${JBOSS_HOME}
+
+# Ensure signals are forwarded to the JVM process correctly for graceful shutdown
+ENV LAUNCH_JBOSS_IN_BACKGROUND true
+
+USER root
 WORKDIR /tmp
 
 RUN printenv > env.properties 
@@ -44,24 +61,24 @@ RUN printenv > env.properties
 USER ${JBOSS_USER}
 WORKDIR ${JBOSS_HOME}
 
-#Creación del usuario administrador de JBoss
+# Wildfly administration
 RUN bin/add-user.sh ${ADMIN_USER} ${ADMIN_PASSWORD} --silent 
 
-# Drivers de PostgreSQL
+# PostgreSQL drivers
 RUN curl -OL https://jdbc.postgresql.org/download/postgresql-${POSTGRESQL_JDBC_VERSION}.jar
 COPY scripts/driver-postgresql-install-offline.cli bin
 RUN bin/jboss-cli.sh --file=bin/driver-postgresql-install-offline.cli && \
     rm postgresql-42.2.5.jar && \
     rm bin/driver-postgresql-install-offline.cli
 
-# Drivers de Oracle
+# Oracle drivers
 RUN curl -OL https://repo1.maven.org/maven2/com/oracle/database/jdbc/ojdbc8/${ORACLE_JDBC_VERSION}/ojdbc8-${ORACLE_JDBC_VERSION}.jar
 COPY scripts/driver-oracle-install-offline.cli bin
 RUN bin/jboss-cli.sh --file=bin/driver-oracle-install-offline.cli && \
     rm ojdbc8-${ORACLE_JDBC_VERSION}.jar && \
     rm bin/driver-oracle-install-offline.cli
 
-# Adaptador Wildfly-Keycloak
+# Wildfly-Keycloak connector
 RUN curl -L https://downloads.jboss.org/keycloak/${KEYCLOAK_VERSION}/adapters/keycloak-oidc/keycloak-wildfly-adapter-dist-${KEYCLOAK_VERSION}.tar.gz | tar zx &&\
     bin/jboss-cli.sh --file=bin/adapter-install-offline.cli
 COPY scripts/goibusuari-add-keycloak-offline.cli bin
