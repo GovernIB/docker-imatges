@@ -15,7 +15,7 @@
 #
 #############################################################################################
 
-FROM jboss/keycloak:7.0.1
+FROM jboss/keycloak:6.0.1
 
 #ENV http_proxy http://10.215.2.65:3128
 #ENV https_proxy http://10.215.2.65:3128
@@ -33,7 +33,7 @@ WORKDIR /opt/jboss/
 
 COPY scripts/import-goib-realm.json /tmp
 COPY module.xml /tmp
-COPY es.caib.afirmaauth.jar /tmp
+#COPY es.caib.afirmaauth.jar /tmp
 COPY scripts/add_plugin.sh /opt/jboss/startup-scripts/add_plugin.sh
 COPY standalone.xml /opt/jboss/keycloak/standalone/configuration/standalone.xml
 #RUN chmod +x /tmp/add_plugin.sh

@@ -51,16 +51,15 @@ services:
          - 8081:8080
          - 8082:9990
       volumes:
-         - ./wildfly/deployments:/opt/jboss/wildfly/standalone/deployments
-         #- /home/u91856/git/projectebase/pbexemple/pbexemple-ear/target:/opt/jboss/wildfly/standalone/deployments
+         - ./wildfly/deployments:/opt/jboss/wildfly/standalone/deployments         
          - ./wildfly/standalone.xml:/opt/jboss/wildfly/standalone/configuration/standalone.xml
-         - ./cacerts:/etc/pki/ca-trust/extracted/java/cacerts
-#keytool -import -alias localhost -keystore cacerts -file apache/server.crt 
+         #- ./cacerts:/etc/pki/ca-trust/extracted/java/cacerts
+         #keytool -import -alias localhost -keystore cacerts -file apache/server.crt 
       depends_on:
          - keycloak
-         #- postgres
-      networks:
-         - backend
+         - postgres
+      #networks:
+      #   - backend
            
    postgres:
       image: postgres:13.1
@@ -95,8 +94,6 @@ services:
          PGADMIN_LISTEN_PORT: 80
       ports:
          - 8083:80
-      #volumes:
-      #   - pgadmin:/var/lib/pgadmin
       depends_on:
          - postgres
       networks:
